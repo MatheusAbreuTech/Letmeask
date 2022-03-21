@@ -1,4 +1,9 @@
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup
+} from 'firebase/auth';
 import { createContext, useEffect, useState, ReactNode } from 'react';
 
 type User = {
@@ -18,7 +23,9 @@ type AuthContextProviderProps = {
 
 export const AuthContext = createContext({} as AuthContextProvider);
 
-export default function AuthContextProvider({ children }: AuthContextProviderProps) {
+export default function AuthContextProvider({
+  children
+}: AuthContextProviderProps) {
   const [user, setUser] = useState<User>();
 
   const auth = getAuth();
@@ -65,5 +72,9 @@ export default function AuthContextProvider({ children }: AuthContextProviderPro
     }
   }
 
-  return <AuthContext.Provider value={{ user, signInWithGoogle }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, signInWithGoogle }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
