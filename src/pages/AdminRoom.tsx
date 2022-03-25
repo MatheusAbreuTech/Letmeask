@@ -1,6 +1,6 @@
-import { getDatabase, ref, remove } from 'firebase/database';
+import { getDatabase, ref, remove, update } from 'firebase/database';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import logoImg from '../assets/images/logo.svg';
 import deleteImg from '../assets/images/delete.svg';
@@ -22,6 +22,16 @@ export default function AdminRoom() {
   const params = useParams<RoomParams>();
   const roomId = params.id;
   const { title, questions } = useRoom(roomId);
+  const navigate = useNavigate();
+
+  function handleEndRoom() {
+    const db = getDatabase();
+    update(ref(db, `rooms/${roomId}`), {
+      endeAt: new Date()
+    });
+
+    navigate('/');
+  }
 
   function handleDeleteQuestion(questionId: string) {
     const modal = window.confirm(
@@ -40,7 +50,9 @@ export default function AdminRoom() {
           <img src={logoImg} alt="Letmeask" />
           <div>
             <RoomCode code={roomId} />
-            <Button isOutlined>Encerrar sala</Button>
+            <Button isOutlined onClick={handleEndRoom}>
+              Encerrar sala
+            </Button>
           </div>
         </div>
       </header>

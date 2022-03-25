@@ -38,8 +38,16 @@ export default function Home() {
       if (snapshot.exists()) {
         navigate(`/rooms/${roomCode}`);
       } else {
-        alert('sala não existe');
+        alert('Room does not exists.');
         setRoomCode('');
+        return;
+      }
+
+      if (snapshot.val().endeAt) {
+        alert('Room already closed.');
+        setRoomCode('');
+        navigate('/');
+
         return;
       }
     });
